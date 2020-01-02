@@ -1,0 +1,39 @@
+@import '../../common/less/checkbox.less';
+
+.filter-sideBar {
+  &__heading {
+    padding-bottom: 10px;
+  }
+
+  &__clear-filter {
+    float: right;
+  }
+
+  &__expander {
+    float: right;
+
+    &--show {
+      display: none;
+    }
+  }
+  &__content {
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+    padding: 5px;
+  }
+  padding: 10px;
+  width: 100%;
+}
+
+@media screen and (max-width: 480px) {
+  .filter-sideBar {
+    &__expander {
+      &--show {
+        display: inline-block;
+      }
+    }
+  }
+}

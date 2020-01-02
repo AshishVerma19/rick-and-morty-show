@@ -1,4 +1,7 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path');
+
 module.exports = {
   module: {
     rules: [
@@ -18,22 +21,12 @@ module.exports = {
         ]
       },
       {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+      },
+      {
         test: /\.less$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'less-loader',
-            options: {
-              strictMath: true,
-              noIeCompat: true
-            }
-          }
-        ]
+        use: ['style-loader', 'css-loader', 'less-loader']
       }
     ]
   },
@@ -41,6 +34,9 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: './src/index.html',
       filename: './index.html'
-    })
+    }),
+    new CopyPlugin([
+      { from: path.resolve(__dirname, 'src/assert'), to: 'src/assert' }
+    ])
   ]
 };

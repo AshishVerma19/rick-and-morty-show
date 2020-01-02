@@ -11,8 +11,8 @@ const characterReducer = function(state = initialState, action) {
       return {
         ...state,
         ...{
-          info: action.data.info,
-          characters: action.data.results
+          info: action.payload.info,
+          characters: action.payload.results
         }
       };
     default:
