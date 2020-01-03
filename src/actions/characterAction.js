@@ -25,24 +25,12 @@ export function loadingComplete() {
   return { type: LOADING_COMPLETE };
 }
 
-export function paginateCharacter(pageNumber) {
-  return dispatch => {
-    dispatch(loading());
-    getCharacter({ page: pageNumber })
-      .then(resp => {
-        debugger;
-        dispatch(loadingComplete());
-        dispatch(addAllCharacters(resp));
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-}
-
-export function searchChracter(name, filterParms) {
+function createParams(name, filterParms, pageNumber) {
   let params = {};
   const { Species, Gender } = filterParms;
+  if (pageNumber) {
+    params.page = pageNumber;
+  }
 
   if (name) {
     params.name = name;
@@ -55,8 +43,28 @@ export function searchChracter(name, filterParms) {
     params.gender = Gender;
   }
 
+  return params;
+}
+export function paginateCharacter(pageNumber, name, filterParms) {
   return dispatch => {
     dispatch(loading());
+    const params = createParams(name, filterParms, pageNumber);
+    getCharacter(params)
+      .then(resp => {
+        debugger;
+        dispatch(loadingComplete());
+        dispatch(addAllCharacters(resp));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+}
+
+export function searchChracter(name, filterParms) {
+  return dispatch => {
+    dispatch(loading());
+    const params = createParams(name, filterParms);
     getCharacter(params)
       .then(resp => {
         dispatch(loadingComplete());

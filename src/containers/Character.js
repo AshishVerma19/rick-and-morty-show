@@ -81,7 +81,11 @@ export class Character extends Component {
 
   paginateCharacters = ({ selected }) => {
     const pageNumber = selected + 1;
-    this.props.paginateCharacter(pageNumber);
+    this.props.paginateCharacter(
+      pageNumber,
+      this.state.name,
+      this.state.filterParms
+    );
   };
 
   componentDidMount() {
@@ -141,25 +145,24 @@ export class Character extends Component {
                       <h1>No Data Found</h1>
                     )}
                   </div>
-                  <div className="character-pagination">
-                    {this.props.characters.length > 0 && (
-                      <ReactPaginate
-                        previousLabel={'previous'}
-                        nextLabel={'next'}
-                        breakLabel={'...'}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        breakClassName={'break-me'}
-                        pageCount={this.props.info.page}
-                        onPageChange={this.paginateCharacters}
-                        containerClassName={'pagination'}
-                        subContainerClassName={'pages pagination'}
-                        activeClassName={'active'}
-                      />
-                    )}
-                  </div>
                 </>
               )}
+              <div className="character-pagination">
+                <ReactPaginate
+                  key={this.props.info.page}
+                  previousLabel={'previous'}
+                  nextLabel={'next'}
+                  breakLabel={'...'}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={2}
+                  breakClassName={'break-me'}
+                  pageCount={this.props.info.page}
+                  onPageChange={this.paginateCharacters}
+                  containerClassName={'pagination'}
+                  subContainerClassName={'pages pagination'}
+                  activeClassName={'active'}
+                />
+              </div>
             </div>
           </div>
         </ErrorBoundary>
