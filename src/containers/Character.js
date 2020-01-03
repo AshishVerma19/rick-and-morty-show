@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Loader from 'react-loader-spinner';
 import ReactPaginate from 'react-paginate';
 import './Character.less';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import CharacherCard from '../components/CharacherCard/CharacherCard';
 import { getCharacters, getInfo } from '../reducers/characterReducer';
@@ -117,30 +119,47 @@ export class Character extends Component {
                   onSortToggle={this.onSortToggle}
                 />
               </div>
-              <div className="characters">
-                {this.props.characters.length > 0 ? (
-                  this.props.characters.map(character => (
-                    <CharacherCard character={character} key={character.id} />
-                  ))
-                ) : (
-                  <h1>Loading</h1>
-                )}
-              </div>
-              <div className="character-pagination">
-                <ReactPaginate
-                  previousLabel={'previous'}
-                  nextLabel={'next'}
-                  breakLabel={'...'}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
-                  breakClassName={'break-me'}
-                  pageCount={this.props.info.page}
-                  onPageChange={this.paginateCharacters}
-                  containerClassName={'pagination'}
-                  subContainerClassName={'pages pagination'}
-                  activeClassName={'active'}
+              {this.props.isLoading ? (
+                <Loader
+                  className="loader"
+                  type="Puff"
+                  color="blue"
+                  height={80}
+                  width={80}
                 />
-              </div>
+              ) : (
+                <>
+                  <div className="characters">
+                    {this.props.characters.length > 0 ? (
+                      this.props.characters.map(character => (
+                        <CharacherCard
+                          character={character}
+                          key={character.id}
+                        />
+                      ))
+                    ) : (
+                      <h1>No Data Found</h1>
+                    )}
+                  </div>
+                  <div className="character-pagination">
+                    {this.props.characters.length > 0 && (
+                      <ReactPaginate
+                        previousLabel={'previous'}
+                        nextLabel={'next'}
+                        breakLabel={'...'}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        breakClassName={'break-me'}
+                        pageCount={this.props.info.page}
+                        onPageChange={this.paginateCharacters}
+                        containerClassName={'pagination'}
+                        subContainerClassName={'pages pagination'}
+                        activeClassName={'active'}
+                      />
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </ErrorBoundary>
@@ -151,7 +170,8 @@ export class Character extends Component {
 
 const mapStateToProps = state => ({
   characters: getCharacters(state.character),
-  info: getInfo(state.character)
+  info: getInfo(state.character),
+  isLoading: state.character.isLoading
 });
 
 const mapDispatchToProps = dispatch =>

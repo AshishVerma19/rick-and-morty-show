@@ -1,6 +1,12 @@
-import { FETCH_ALL_CHARACTERS } from '../actions/characterAction';
+import {
+  FETCH_ALL_CHARACTERS,
+  DATA_NOT_FOUND,
+  LOADING,
+  LOADING_COMPLETE
+} from '../actions/characterAction';
 
 const initialState = {
+  isLoading: false,
   info: {},
   characters: []
 };
@@ -14,6 +20,18 @@ const characterReducer = function(state = initialState, action) {
           info: action.payload.info,
           characters: action.payload.results
         }
+      };
+    case DATA_NOT_FOUND:
+      return initialState;
+    case LOADING:
+      return {
+        ...state,
+        ...{ isLoading: true }
+      };
+    case LOADING_COMPLETE:
+      return {
+        ...state,
+        ...{ isLoading: false }
       };
     default:
       return state;
